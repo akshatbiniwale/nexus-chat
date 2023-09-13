@@ -55,6 +55,9 @@
           <div class="room__info">
             <h3>{{room.name}}</h3>
             <span>{{room.created|timesince}} ago</span>
+            {% if request.user not in room.participants.all %}
+              <a href="{% url 'room' room.id %}join" class="btn btn--main btn--pill">Join</a>
+            {% endif %}
           </div>
           <div class="room__hosted">
             <p>Hosted By</p>

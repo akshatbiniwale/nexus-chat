@@ -111,6 +111,16 @@ def userProfile(request, pk):
                'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
 
+@login_required(login_url='login')
+def joinRoom(request, pk):
+    room = Room.objects.get(id=pk)
+
+    if request.user in room.participants.all():
+        return HttpResponse('You are already a participant of this room!')
+
+    room.participants.add(request.user)
+    return redirect('room', pk=room.id)
+
 
 @login_required(login_url='login')
 def createRoom(request):
