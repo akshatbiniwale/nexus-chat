@@ -6,6 +6,8 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm, MyUserCreationForm
+import http.client
+import json
 
 # Create your views here.
 
@@ -14,6 +16,25 @@ from .forms import RoomForm, UserForm, MyUserCreationForm
 #     {'id': 2, 'name': 'Design with me'},
 #     {'id': 3, 'name': 'Frontend developers'},
 # ]
+
+
+def extAPICall(request):
+    conn = http.client.HTTPSConnection("shazam.p.rapidapi.com")
+
+    headers = {
+        'X-RapidAPI-Key': "4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda",
+        'X-RapidAPI-Host': "shazam.p.rapidapi.com"
+    }
+
+    conn.request(
+        "GET", "/songs/list-recommendations?key=484129036&locale=en-US", headers=headers)
+
+    res = conn.getresponse()
+    data = res.read()
+
+    print()
+
+    return render(request, 'base/extApiCall.html', {'apiData': json.loads(data.decode("utf-8"))})
 
 
 def loginPage(request):
@@ -110,6 +131,7 @@ def userProfile(request, pk):
     context = {'user': user, 'rooms': rooms,
                'room_messages': room_messages, 'topics': topics}
     return render(request, 'base/profile.html', context)
+
 
 @login_required(login_url='login')
 def joinRoom(request, pk):

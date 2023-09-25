@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div style="margin: 3rem 5rem;">
+  <h1 style="font-size: 3rem; margin: 2rem 0;">List of Songs</h1>
+
+  <div style="margin: 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem;">
+    {% for song in apiData.tracks %}
+    <div style="text-align: center; justify-content: center;">
+      <div style="text-align: center; justify-content: center;">
+        <img src="{{song.share.image}}" alt="{{song.key}}" height="200px" width="100px">
+      </div>
+      <div style="text-align: center;">
+        <h1>{{song.title}}</h1>
+        <h3>{{song.subtitle}}</h3>
+        <a href="{{song.share.href}}">Listen to this song now!</a>
+        <p>{{song.title}}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+{% endblock %}
