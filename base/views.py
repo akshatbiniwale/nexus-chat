@@ -32,9 +32,11 @@ def extAPICall(request):
     res = conn.getresponse()
     data = res.read()
 
-    print()
-
     return render(request, 'base/extApiCall.html', {'apiData': json.loads(data.decode("utf-8"))})
+
+
+def mathFacts(request):
+    return render(request, 'base/mathFacts.html')
 
 
 def loginPage(request):

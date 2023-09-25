@@ -1,0 +1,46 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div style="font-size: 4rem; margin: 3rem 5rem;">
+  <h1>Random Math Fact</h1>
+  <p id="data-container" style="font-size: 3rem;">
+    <!-- API data will be displayed here -->
+  </p>
+  <button onclick="refreshPage()" style="font-size: 2rem;">Click to get another fact!</button>
+</div>
+
+
+<script>
+  // JavaScript code to make an API request
+  async function fetchData() {
+    const url = 'https://numbersapi.p.rapidapi.com/random/trivia?min=10&max=20&fragment=true&json=true';
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda',
+        'X-RapidAPI-Host': 'numbersapi.p.rapidapi.com'
+      }
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const result = await response.text();
+      // Update the HTML content with the fetched data
+      document.getElementById('data-container').innerHTML = JSON.parse(result).text + ": " + JSON.parse(result).number;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  // Call the fetchData function to make the API request when the page loads
+  window.onload = fetchData;
+</script>
+
+<script>
+  function refreshPage() {
+    location.reload(); // Reload the current page
+  }
+</script>
+
+{% endblock %}
