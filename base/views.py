@@ -17,28 +17,6 @@ import json
 #     {'id': 3, 'name': 'Frontend developers'},
 # ]
 
-
-def extAPICall(request):
-    conn = http.client.HTTPSConnection("shazam.p.rapidapi.com")
-
-    headers = {
-        'X-RapidAPI-Key': "4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda",
-        'X-RapidAPI-Host': "shazam.p.rapidapi.com"
-    }
-
-    conn.request(
-        "GET", "/songs/list-recommendations?key=484129036&locale=en-US", headers=headers)
-
-    res = conn.getresponse()
-    data = res.read()
-
-    return render(request, 'base/extApiCall.html', {'apiData': json.loads(data.decode("utf-8"))})
-
-
-def mathFacts(request):
-    return render(request, 'base/mathFacts.html')
-
-
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -225,6 +203,27 @@ def updateUser(request):
             return redirect('user-profile', pk=user.id)
 
     return render(request, 'base/update-user.html', {'form': form})
+
+@login_required(login_url='login')
+def extAPICall(request):
+    conn = http.client.HTTPSConnection("shazam.p.rapidapi.com")
+
+    headers = {
+        'X-RapidAPI-Key': "4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda",
+        'X-RapidAPI-Host': "shazam.p.rapidapi.com"
+    }
+
+    conn.request(
+        "GET", "/songs/list-recommendations?key=484129036&locale=en-US", headers=headers)
+
+    res = conn.getresponse()
+    data = res.read()
+
+    return render(request, 'base/extApiCall.html', {'apiData': json.loads(data.decode("utf-8"))})
+
+@login_required(login_url='login')
+def mathFacts(request):
+    return render(request, 'base/mathFacts.html')
 
 
 def topicsPage(request):

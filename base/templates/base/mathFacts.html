@@ -4,15 +4,11 @@
 
 <div style="font-size: 4rem; margin: 3rem 5rem;">
   <h1>Random Math Fact</h1>
-  <p id="data-container" style="font-size: 3rem;">
-    <!-- API data will be displayed here -->
-  </p>
+  <p id="data-container" style="font-size: 3rem;"></p>
   <button onclick="refreshPage()" style="font-size: 2rem;">Click to get another fact!</button>
 </div>
 
-
 <script>
-  // JavaScript code to make an API request
   async function fetchData() {
     const url = 'https://numbersapi.p.rapidapi.com/random/trivia?min=10&max=20&fragment=true&json=true';
     const options = {
@@ -33,13 +29,12 @@
     }
   }
 
-  // Call the fetchData function to make the API request when the page loads
   window.onload = fetchData;
 </script>
 
 <script>
   function refreshPage() {
-    location.reload(); // Reload the current page
+    location.reload();
   }
 </script>
 
