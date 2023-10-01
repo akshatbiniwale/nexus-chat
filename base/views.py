@@ -204,22 +204,57 @@ def updateUser(request):
 
     return render(request, 'base/update-user.html', {'form': form})
 
+
 @login_required(login_url='login')
 def extAPICall(request):
-    conn = http.client.HTTPSConnection("shazam.p.rapidapi.com")
+    # conn = http.client.HTTPSConnection("shazam.p.rapidapi.com")
 
-    headers = {
+    # headers = {
+    #     'X-RapidAPI-Key': "4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda",
+    #     'X-RapidAPI-Host': "shazam.p.rapidapi.com"
+    # }
+
+    # conn.request(
+    #     "GET", "/songs/list-recommendations?key=484129036&locale=en-US", headers=headers)
+
+    # res = conn.getresponse()
+    # data = res.read()
+
+    # bloomberg api call - get stats for stock
+
+    conn1 = http.client.HTTPSConnection(
+        "bloomberg-market-and-financial-news.p.rapidapi.com")
+
+    headers1 = {
         'X-RapidAPI-Key': "4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda",
-        'X-RapidAPI-Host': "shazam.p.rapidapi.com"
+        'X-RapidAPI-Host': "bloomberg-market-and-financial-news.p.rapidapi.com"
     }
 
-    conn.request(
-        "GET", "/songs/list-recommendations?key=484129036&locale=en-US", headers=headers)
+    conn1.request(
+        "GET", "/stock/get-statistics?id=aapl%3Aus&template=STOCK", headers=headers1)
 
-    res = conn.getresponse()
-    data = res.read()
+    res1 = conn1.getresponse()
+    data1 = res1.read()
 
-    return render(request, 'base/extApiCall.html', {'apiData': json.loads(data.decode("utf-8"))})
+    # yh news - get popular watchlist for market
+
+    conn2 = http.client.HTTPSConnection("yh-finance.p.rapidapi.com")
+
+    headers2 = {
+        'X-RapidAPI-Key': "4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda",
+        'X-RapidAPI-Host': "yh-finance.p.rapidapi.com"
+    }
+
+    conn2.request(
+        "GET", "/market/get-earnings?region=US&startDate=1585155600000&endDate=1589475600000&size=10", headers=headers2)
+
+    res2 = conn2.getresponse()
+    data2 = res2.read()
+
+    return render(request, 'base/extApiCall.html', {'data1': json.loads(data1.decode(
+        "utf-8")), 'data2': json.loads(data2.decode(
+            "utf-8"))})
+
 
 @login_required(login_url='login')
 def mathFacts(request):

@@ -2,40 +2,60 @@
 
 {% block content %}
 
-<div style="font-size: 4rem; margin: 3rem 5rem;">
-  <h1>Random Math Fact</h1>
-  <p id="data-container" style="font-size: 3rem;"></p>
-  <button onclick="refreshPage()" style="font-size: 2rem;">Click to get another fact!</button>
-</div>
+<div id="data-container"></div>
 
 <script>
   async function fetchData() {
-    const url = 'https://numbersapi.p.rapidapi.com/random/trivia?min=10&max=20&fragment=true&json=true';
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': '4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda',
-        'X-RapidAPI-Host': 'numbersapi.p.rapidapi.com'
-      }
-    };
-
     try {
-      const response = await fetch(url, options);
-      const result = await response.text();
-      // Update the HTML content with the fetched data
-      document.getElementById('data-container').innerHTML = JSON.parse(result).text + ": " + JSON.parse(result).number;
+      const url1 = 'https://bloomberg-market-and-financial-news.p.rapidapi.com/stock/get-statistics?id=aapl%3Aus&template=STOCK';
+      const options1 = {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': '4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda',
+          'X-RapidAPI-Host': 'bloomberg-market-and-financial-news.p.rapidapi.com'
+        }
+      };
+
+      const response1 = await fetch(url1, options1);
+      const data1 = JSON.parse(await response1.text());
+
+      const url2 = 'https://yh-finance.p.rapidapi.com/market/get-earnings?region=US&startDate=1585155600000&endDate=1589475600000&size=10';
+      const options2 = {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': '4449fd3e75mshafba1df15a7e228p1ba074jsneaf6ef580dda',
+          'X-RapidAPI-Host': 'yh-finance.p.rapidapi.com'
+        }
+      };
+
+      const response2 = await fetch(url2, options2);
+      const data2 = JSON.parse(await response2.text());
+
+      document.getElementById('data-container').innerHTML = `
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div
+          style="border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; padding: 20px; width: 400px; height: fit-content;">
+          <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px;">${data1.result[0].name} of the Day</h2>
+          <table style="width: 100%;">
+            <tbody>
+              ${data1.result[0].table.map((item) => { return `<tr><td style="font-weight: bold; padding: 5px 0 5px 10px;">${item.name}</td><td>${item.value}</td</tr>` }).join('')}
+            </tbody>
+          </table>
+        </div>
+        <div style="margin: 2rem  auto;">
+          <h1 style="font-size: 2.5rem; margin-bottom: 20px; text-align: center;">Top Listings</h1>
+          <div style="width: 800px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem;">
+            ${data2.finance.result.map((item) => { return `<div style="border: 1px solid #ccc; padding: 1rem;"><h2 style="text-align: center; font-size: 1.2rem;">${item.companyShortName} (${item.ticker})</h2><p><strong>EPS Actual:</strong> ${item.epsActual}</p><p><strong>EPS Estimate:</strong> ${item.epsEstimate}</p><p><strong>Surprise Percent:</strong> ${item.surprisePercent}</p><p><strong>Rank:</strong> ${item.rank}</p></div>` }).join('')}
+          </div>
+        </div>
+      </div>
+      `;
     } catch (error) {
-      console.error('Error:', error);
+      console.error(error);
     }
   }
 
-  window.onload = fetchData;
-</script>
-
-<script>
-  function refreshPage() {
-    location.reload();
-  }
+  fetchData();
 </script>
 
 {% endblock %}
