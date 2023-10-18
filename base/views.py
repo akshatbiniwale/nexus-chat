@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -8,14 +8,16 @@ from .models import Room, Topic, Message, User
 from .forms import RoomForm, UserForm, MyUserCreationForm
 import http.client
 import json
+import jwt
 
-# Create your views here.
+# Create y3our views here.
 
 # rooms = [
 #     {'id': 1, 'name': 'Lets learn python!'},
 #     {'id': 2, 'name': 'Design with me'},
 #     {'id': 3, 'name': 'Frontend developers'},
 # ]
+
 
 def loginPage(request):
     page = 'login'
@@ -35,7 +37,12 @@ def loginPage(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            encoded_jwt = jwt.encode(
+                {"email": user.email}, "nexuschat", algorithm="HS256")
+            response = HttpResponseRedirect("/")
+            print("Sending response")
+            response.set_cookie("access_token", encoded_jwt)
+            return response
         else:
             messages.error(request, 'Username OR password does not exit')
 
@@ -56,8 +63,13 @@ def registerPage(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            encoded_jwt = jwt.encode(
+                {"email": user.email}, "nexuschat", algorithm="HS256")
+
             user.save()
             login(request, user)
+            response = HttpResponse()
+            response.set_cookie("access_token", encoded_jwt)
             return redirect('home')
         else:
             messages.error(request, 'An error occurred during registration')
