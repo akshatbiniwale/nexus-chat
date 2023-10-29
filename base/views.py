@@ -18,12 +18,14 @@ import jwt
 #     {'id': 3, 'name': 'Frontend developers'},
 # ]
 
+
 def jwt_login_required(view_func):
     def _wrapped_view(request, *args, **kwargs):
         token = request.COOKIES.get('access_token')
         if token:
             try:
-                decoded_token = jwt.decode(token, 'nexuschat', algorithms=["HS256"])
+                decoded_token = jwt.decode(
+                    token, 'nexuschat', algorithms=["HS256"])
                 return view_func(request, *args, **kwargs)
             except jwt.ExpiredSignatureError:
                 pass
@@ -296,3 +298,8 @@ def topicsPage(request):
 def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'base/activity.html', {'room_messages': room_messages})
+
+
+@login_required(login_url='login')
+def videoCall(request, pk):
+    return render(request, 'base/vc-lobby.html', {'roomId': pk, 'user': request.user.username})
