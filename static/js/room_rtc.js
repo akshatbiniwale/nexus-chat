@@ -1,29 +1,14 @@
 const APP_ID = "dc5defcfc89249939f383ae953d3c126";
 
-let uid = sessionStorage.getItem("uid");
-if (!uid) {
-    uid = String(Math.floor(Math.random() * 10000));
-    sessionStorage.setItem("uid", uid);
-}
-
 let token = null;
 let client;
 
 let rtmClient;
 let channel;
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-let roomId = urlParams.get("room");
+let roomId = "{{ vcRoom }}";
 
-if (!roomId) {
-    roomId = "main";
-}
-
-let displayName = sessionStorage.getItem("display_name");
-if (!displayName) {
-    window.location = "lobby.html";
-}
+let displayName = "{{ name }}";
 
 let localTracks = [];
 let remoteUsers = {};
