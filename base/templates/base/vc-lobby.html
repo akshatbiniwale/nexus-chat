@@ -36,11 +36,11 @@
             <div id="form__container__header">
                 <p>👋 Create or Join Room</p>
             </div>
-            <form id="lobby__form">
+            <form id="lobby__form" action="/room/{{ roomId }}/stream">
                 <div class="form__field__wrapper">
                     <label>Your Name</label>
-                    <input type="text" autocomplete="off" name="name" required
-                        placeholder="Enter your display name..." value="{{ user }}" />
+                    <input type="text" autocomplete="off" name="name" required placeholder="Enter your display name..."
+                        value="{{ user }}" />
                 </div>
                 <div class="form__field__wrapper">
                     <label>Room Name</label>
@@ -60,6 +60,6 @@
     </main>
 
 </body>
-<script type="text/javascript" src="../../../static/js/lobby.js"></script>
+<!-- <script type="text/javascript" src="../../../static/js/lobby.js"></script> -->
 
 </html>

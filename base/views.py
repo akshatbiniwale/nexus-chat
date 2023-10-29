@@ -303,3 +303,8 @@ def activityPage(request):
 @login_required(login_url='login')
 def videoCall(request, pk):
     return render(request, 'base/vc-lobby.html', {'roomId': pk, 'user': request.user.username})
+
+
+@login_required(login_url='login')
+def streamCall(request, pk):
+    return render(request, 'base/vc-room.html', {'name': request.GET.get('name'), 'vcRoom': request.GET.get('room'), 'user': request.user, 'room': Room.objects.get(id=pk)})
