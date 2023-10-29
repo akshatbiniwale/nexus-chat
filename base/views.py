@@ -18,6 +18,20 @@ import jwt
 #     {'id': 3, 'name': 'Frontend developers'},
 # ]
 
+def jwt_login_required(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        token = request.COOKIES.get('access_token')
+        if token:
+            try:
+                decoded_token = jwt.decode(token, 'nexuschat', algorithms=["HS256"])
+                return view_func(request, *args, **kwargs)
+            except jwt.ExpiredSignatureError:
+                pass
+            except jwt.InvalidTokenError:
+                pass
+        return redirect('login')
+    return login_required(_wrapped_view)
+
 
 def loginPage(request):
     page = 'login'
@@ -217,7 +231,7 @@ def updateUser(request):
     return render(request, 'base/update-user.html', {'form': form})
 
 
-@login_required(login_url='login')
+@jwt_login_required
 def extAPICall(request):
     # conn = http.client.HTTPSConnection("shazam.p.rapidapi.com")
 
