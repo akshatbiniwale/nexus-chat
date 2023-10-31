@@ -9,6 +9,8 @@ from .forms import RoomForm, UserForm, MyUserCreationForm
 import http.client
 import json
 import jwt
+import random
+import math
 
 # Create y3our views here.
 
@@ -307,4 +309,5 @@ def videoCall(request, pk):
 
 @login_required(login_url='login')
 def streamCall(request, pk):
-    return render(request, 'base/vc-room.html', {'name': request.GET.get('name'), 'vcRoom': request.GET.get('room'), 'user': request.user, 'room': Room.objects.get(id=pk)})
+    uid = str(math.floor(random.random() * 10000))
+    return render(request, 'base/vc-room.html', {'name': request.GET.get('name'), 'vcRoom': request.GET.get('room'), 'user': request.user, 'room': Room.objects.get(id=pk), 'uid': uid})

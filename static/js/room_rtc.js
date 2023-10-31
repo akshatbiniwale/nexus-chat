@@ -1,5 +1,7 @@
 const APP_ID = "dc5defcfc89249939f383ae953d3c126";
 
+const uid = document.getElementById("uid-hidden-html").innerText;
+
 let token = null;
 let client;
 
