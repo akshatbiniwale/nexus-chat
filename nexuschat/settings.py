@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     "corsheaders",
+    'storages',
 ]
 
 AUTH_USER_MODEL = 'base.User'
@@ -115,6 +120,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# aws iam programattic access
+
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+
+AWS_ACCESS_SECRET_KEY = env('AWS_ACCESS_SECRET_KEY')
+
+AWS_STORAGE_BUCKET_NAME = "nexuschatbucket"
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -157,5 +176,5 @@ CORS_ALLOW_ALL_ORIGINS = True
 import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.parse('postgres://nexus_chat_db_user:XFDo4JK0RkfTWr0OGS3W8kqHxgMs3bWb@dpg-cl3o989novjs73bkp68g-a.singapore-postgres.render.com/nexus_chat_db')
+    'default': dj_database_url.parse(env('RENDER_DATABASE_URL'))
 }
