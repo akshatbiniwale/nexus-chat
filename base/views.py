@@ -235,7 +235,7 @@ def updateUser(request):
     return render(request, 'base/update-user.html', {'form': form})
 
 
-@jwt_login_required
+@login_required(login_url='login')
 def extAPICall(request):
     # conn = http.client.HTTPSConnection("shazam.p.rapidapi.com")
 
