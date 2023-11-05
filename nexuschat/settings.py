@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3#av2c6nptlbbb6^muqkchu&fe3wv&n$t2+g$v!ir-f5%doocb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -85,12 +85,16 @@ WSGI_APPLICATION = 'nexuschat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+"""
 
 
 # Password validation
@@ -147,3 +151,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Render postgres database (live)
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.parse('postgres://nexus_chat_db_user:XFDo4JK0RkfTWr0OGS3W8kqHxgMs3bWb@dpg-cl3o989novjs73bkp68g-a.singapore-postgres.render.com/nexus_chat_db')
+}
