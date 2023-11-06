@@ -134,6 +134,8 @@ STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
