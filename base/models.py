@@ -6,8 +6,11 @@ class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
+    
+    print("models wala trigger hua")
 
-    avatar = models.ImageField(null=True, default="images/avatar.svg", upload_to='images/')
+    avatar = models.ImageField(
+        null=True, default="images/avatar.svg", upload_to="https://nexuschatbucket.s3.amazonaws.com/images/profiles/")
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
