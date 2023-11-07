@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import dj_database_url
 from pathlib import Path
 import environ
 
@@ -120,22 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# aws iam programattic access
-
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-
-AWS_ACCESS_SECRET_KEY = env('AWS_ACCESS_SECRET_KEY')
-
-AWS_STORAGE_BUCKET_NAME = "nexuschatbucket"
-
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
-STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-
-ADMIN_MEDIA_PREFIX = '/static/admin/'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -175,8 +160,22 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # Render postgres database (live)
 
-import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.parse(env('RENDER_DATABASE_URL'))
 }
+
+
+# aws iam programattic access
+
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+
+AWS_ACCESS_SECRET_KEY = env('AWS_ACCESS_SECRET_KEY')
+
+AWS_STORAGE_BUCKET_NAME = "nexuschatbucket"
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
